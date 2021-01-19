@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="icofont/icofont.min.css">
+</head>
+
+<body>
+  <div id="app">
+    <div class="bg-gray-900 text-white p-2 pb-16">
+      <div class="flex justify-between container mx-auto mb-5">
+        <div>
+          <p class="text-3xl"> Hello Delowar!</p>
+        </div>
+        <div>
+          <span
+            class="rounded-full bg-purple-800 pl-3 pr-3 pt-2 pb-2 block font-semi-bold text-white cursor-pointer hover:bg-purple-900 transition-all ease-in duration-150">Jan
+            2021</span>
+        </div>
+      </div>
+      <div
+        class="ml-8 border-8 border-double border-blue-600 border-opacity-30 rounded-full h-32 w-32 flex items-center justify-center">
+        <span class="font-bold text-3xl">25%</span>
+      </div>
+    </div>
+
+    <div class="bg-blue-800 rounded-t-3xl -mt-8 pb-8">
+      <div
+        class="sm:pr-4 sm:pl-4 md:pt-2 md:pb-2 md:pl-5 md:pr-5 container mx-auto flex justify-between text-white font-bold">
+        <div class="border-indigo-500 border-r-2 border-opacity-50 w-1/2">
+          <span class="block">Income</span>
+          $ {{ totalIncome }}
+        </div>
+        <div>
+          <span class="block">Expenses</span>
+          $ {{ totalExpense }}
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-t-3xl -mt-8 pb-16">
+      <div class="sm:pr-4 sm:pl-4 md:p-2 container mx-auto flex justify-between font-bold">
+        <div class="w-1/2 m-2">
+          <div class="bg-gray-900 bg-opacity-10 shadow-md rounded-md p-2">
+            <span class="block text-2xl">12 Jun</span>
+            <div class="flex justify-between">
+              <span class="block text-gray-700 text-opacity-50">Income</span>
+              <span class="block text-green-800">$ 1.200</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="block text-gray-700 text-opacity-50">Expenses</span>
+              <span class="block text-red-800">$ 1.200</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="w-1/2 m-2">
+          <div class="bg-gray-900 bg-opacity-10 shadow-md rounded-md p-2">
+            <span class="block text-2xl">12 Jun</span>
+            <div class="flex justify-between">
+              <span class="block text-gray-700 text-opacity-50">Income</span>
+              <span class="block text-green-800">$ 1.200</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="block text-gray-700 text-opacity-50">Expenses</span>
+              <span class="block text-red-800">$ 1.200</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <!-- This example requires Tailwind CSS v2.0+ -->
+    <div class="fixed z-10 inset-0 overflow-y-auto" v-if="showInputModal">
+      <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!--
+        Background overlay, show/hide based on modal state.
+  
+        Entering: "ease-out duration-300"
+          From: "opacity-0"
+          To: "opacity-100"
+        Leaving: "ease-in duration-200"
+          From: "opacity-100"
+          To: "opacity-0"
+      -->
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+          <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <!-- This element is to trick the browser into centering the modal contents. -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <!--
+        Modal panel, show/hide based on modal state.
+  
+        Entering: "ease-out duration-300"
+          From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          To: "opacity-100 translate-y-0 sm:scale-100"
+        Leaving: "ease-in duration-200"
+          From: "opacity-100 translate-y-0 sm:scale-100"
+          To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+      -->
+        <div
+          class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+          role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="sm:flex sm:items-start">
+              <div
+                class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-indigo-600 sm:mx-0 sm:h-10 sm:w-10">
+                <!-- Heroicon name: exclamation -->
+                <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
+                  Add Transaction
+                </h3>
+                <div class="mt-2">
+                  <button @click="showIncomeItems" type="button"
+                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    Income <i class="icofont-money-bag text-xl"></i>
+                  </button>
+                  <button @click="showExpenseItems" type="button"
+                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    Expense <i class="icofont-coins text-xl"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4" v-if="showIncome || showExpense">
+            <div class="sm:flex sm:items-start">
+              <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 sm:mx-0 sm:h-10 sm:w-10">
+
+              </div>
+              <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left" id="incomeList" v-if="showIncome">
+
+                <!-- Repeat this button -->
+                <button v-for="(income, index) in incomeList" type="button"
+                  class="bg-gray-300 rounded-full pt-2 pb-2 pr-3 pl-2 focus:outline-none hover:bg-gray-700 hover:text-white transition-all ease-in duration-200 ml-1 mb-2"
+                  @click="showInputBox(index,'Income')">
+                  <i :class="income.icon" class="text-xl"></i> <span class="font-semibold">{{ income.name }}</span>
+                </button>
+
+              </div>
+              <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left" v-if="showExpense">
+
+                <!-- Repeat this button -->
+                <button v-for="(expense, index) in expenseList" type="button"
+                  class="bg-gray-300 rounded-full pt-2 pb-2 pr-3 pl-2 focus:outline-none hover:bg-gray-700 hover:text-white transition-all ease-in duration-200 ml-1 mb-2"
+                  @click="showInputBox(index,'Expense')">
+                  <i :class="expense.icon" class="text-xl"></i> <span class="font-semibold">{{ expense.name }}</span>
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+          <div v-if="showInputForm" class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+
+            <span class="inline-block font-semibold w-1/3">Type: </span>{{ type }} <br>
+            <span class="inline-block font-semibold w-1/3">Name: </span>{{ name }} <br>
+            <span class="font-semibold inline-block w-1/3">Date:</span> <input type="date" class="p-2" name="date" id="date"
+              placeholder="Date" v-model="date"> <br>
+            <span class="font-semibold inline-block w-1/3">Amount:</span> <input type="number" class="p-2" name="amount" id="amount"
+              placeholder="Amount" step="0.01" v-model="amount">
+          </div>
+
+
+          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+            <button @click="saveItem" type="button"
+              class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+              Save
+            </button>
+            <button @click="cancel" type="button"
+              class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-red-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-900 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="bottom-1 absolute w-full">
+      <div class="container mx-auto">
+        <button @click="addItem"
+          class="text-white bg-indigo-700 hover:bg-indigo-900 transition-all ease-out duration-300 h-16 w-16 rounded-full mx-auto block text-3xl focus:outline-none">+</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        expenseList: [
+          {
+            icon: 'icofont-airplane',
+            name: 'Airplane'
+          },
+          {
+            icon: 'icofont-auto-mobile',
+            name: 'Transport'
+          },
+          {
+            icon: 'icofont-auto-rickshaw',
+            name: 'Rickshaw'
+          },
+          {
+            icon: 'icofont-bus-alt-2',
+            name: 'Bus'
+          },
+          {
+            icon: 'icofont-ambulance-cross',
+            name: 'Ambulance'
+          },
+          {
+            icon: 'icofont-capsule',
+            name: 'Medicine'
+          },
+          {
+            icon: 'icofont-fast-food',
+            name: 'Food'
+          },
+          {
+            icon: 'icofont-injection-syringe',
+            name: 'Injection'
+          }
+        ],
+        incomeList: [
+          {
+            icon: 'icofont-wifi-router',
+            name: 'Wireless Service'
+          },
+          {
+            icon: 'icofont-user-suited',
+            name: 'Tuition'
+          },
+          {
+            icon: 'icofont-brand-amazon',
+            name: 'Amazon Affiliate'
+          },
+          {
+            icon: 'icofont-bank-transfer-alt',
+            name: 'Salary'
+          },
+          {
+            icon: 'icofont-ambulance-cross',
+            name: 'Ambulance'
+          },
+          {
+            icon: 'icofont-instrument',
+            name: 'Work'
+          }
+        ],
+        showExpense: false,
+        showIncome: false,
+        showInputForm: false,
+        showInputModal: false,
+        type: '',
+        name: '',
+        amount: '',
+        item: '',
+        userExpenses: [],
+        userIncomes: [],
+        date: ''
+      },
+      computed: {
+        totalIncome() {
+          income = 0
+          this.userIncomes.forEach(element => {
+            income += +element.description.amount
+          });
+          return parseFloat(income).toFixed(2)
+        },
+        totalExpense() {
+          expense = 0
+          this.userExpenses.forEach(element => {
+            expense += +element.description.amount
+          });
+          return parseFloat(expense).toFixed(2)        }
+      },
+      methods: {
+        showIncomeItems() {
+          this.showIncome = true
+          this.showExpense = false
+        },
+        showExpenseItems() {
+          this.showIncome = false
+          this.showExpense = true
+        },
+        saveItem() {
+          description = {
+            date : this.date,
+            name : this.name,
+            amount : this.amount,
+            id : this.item
+          }
+          if ('Expense' == this.type) {
+            this.userExpenses.push({description})
+          } else {
+            this.userIncomes.push({description})
+          }
+          this.showInputModal = false
+          this.date = ''
+          this.name = ''
+          this.amount = ''
+          this.item = ''
+        },
+        cancel() {
+          this.showInputModal = false,
+          this.date = ''
+          this.name = ''
+          this.amount = ''
+          this.item = ''
+        },
+        showInputBox(index, type) {
+          this.showExpense = false,
+            this.showIncome = false,
+            this.showInputForm = true,
+            this.type = type
+          this.item = index
+          if (type == 'Income') {
+            this.name = this.incomeList[index].name
+          } else {
+            this.name = this.expenseList[index].name
+          }
+        },
+        addItem() {
+          this.showInputModal = true,
+          this.showInputForm = false
+          
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>
